@@ -1,0 +1,26 @@
+{
+  "manifest_version": 2,
+
+  "name": "WalkMe Whois",
+  "description": "Just a small whois extension for WalkMe.",
+  "version": "1.0",
+  
+  "icons": {
+	"48": "assets/icons/48x48.png"
+  },
+
+  "browser_action": {
+    "default_popup": "assets/popup.html"
+  },
+  
+  "content_scripts": [{
+    "matches": 	["<all_urls>"],
+    "js": 		["assets/js/content.js"]
+  }],
+  
+  "content_security_policy": "script-src 'self' https://s3.amazonaws.com/s3.maketutorial.com/; object-src 'self'",
+
+  "permissions": [
+    "activeTab"
+  ]
+}
