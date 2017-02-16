@@ -16,7 +16,7 @@ function getWalkMe() {
 }
 
 chrome.runtime.onMessage.addListener(function(message, sender, sendResponse) {
-  if(!message.action) return; //TODO error?
+  if(!message.action) return;
 
   switch(message.action) {
     case 'getWalkMe': {

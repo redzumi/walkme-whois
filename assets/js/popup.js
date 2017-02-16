@@ -1,6 +1,11 @@
-function sendMessage(data, callback) {
+function getWalkMeData(callback) {
   chrome.tabs.query({ active: true, currentWindow: true }, function(tabs) {
-    chrome.tabs.sendMessage(tabs[0].id, data, callback);
+    chrome.tabs.sendMessage(tabs[0].id, { action: "getWalkMe" }, function(response) {
+      if(!response || !response.success)
+        return showError('Page doesn\'t contain the WalkMe.');
+
+      callback(response.data);
+    });
   });
 }
 
@@ -18,15 +23,6 @@ function getAdditionalData(userId, callback) {
     window.fixedCallback = callback;
 }
 
-function getWalkMeData(callback) {
-  sendMessage({ action: "getWalkMe" }, function(response) {
-    if(!response || !response.success)
-      return showError('Page doesn\'t contain the WalkMe.');
-
-    callback(response.data);
-  });
-}
-
 function showError(error) {
   document.getElementById('error').innerText = error;
 }
@@ -38,14 +34,8 @@ function showDetails(details) {
   details.forEach(function (data)  {
     var elm = document.createElement('p');
 
-    var nameElm = document.createElement('span');
-    nameElm.innerHTML = '<strong>' + data.name + ': </strong>';
-
-    var valueElm = document.createElement('span');
-    valueElm.innerHTML = data.value;
-
-    elm.appendChild(nameElm);
-    elm.appendChild(valueElm);
+    elm.innerHTML =
+      '<strong>' + data.name + ': </strong>' + data.value;
 
     whois.appendChild(elm);
   });
@@ -123,7 +113,7 @@ function showWalkMeData(data) {
 
   showDetails(details);
 
-  getAdditionalData(userId, showAdditionalData); //TODO async (?)
+  getAdditionalData(userId, showAdditionalData);
 }
 
 //get walkme after popup load
