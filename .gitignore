@@ -130,10 +130,3 @@ jspm_packages
 
 ### Built files ###
 build
-
-### User groups config ###
-groups.json
-
-### Groups images ###
-images/*.*
-!images/default.png
