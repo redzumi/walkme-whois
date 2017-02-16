@@ -10,17 +10,15 @@ function getWalkMeData(callback) {
 }
 
 function getAdditionalData(userId, callback) {
-  var url = 'https://s3.amazonaws.com/s3.maketutorial.com/users/' + userId + '/settings.txt';
+  if(!window.fixedCallback) window.fixedCallback = callback;
 
-  var script = document.createElement('script');
+  var url     = 'https://s3.amazonaws.com/s3.maketutorial.com/users/' + userId + '/settings.txt';
+  var script  = document.createElement('script');
 
   script.setAttribute('type', 'text/javascript');
   script.setAttribute('src', url);
 
   document.body.appendChild(script);
-
-  if(!window.fixedCallback)
-    window.fixedCallback = callback;
 }
 
 function showError(error) {
@@ -44,8 +42,8 @@ function showDetails(details) {
 function showAdditionalData(data) {
   var libVerRe = /[_]lib_(.*).js/;
 
-  var version 		= data.LibFile.match(libVerRe)[1];
-  var dataFilesUrls 	= [];
+  var version 		  = data.LibFile.match(libVerRe)[1];
+  var dataFilesUrls = [];
   var languages 		= [];
 
   data.DataFiles.forEach(function (file) {
@@ -77,15 +75,16 @@ function showAdditionalData(data) {
 function showWalkMeData(data) {
   var userEnvRe = /(.*)[/](.*)/;
 
-  var user 	= data.src[3];
+  var user 	  = data.src[3];
   var userId  = user;
-  var env 	= 'production';
+  var env 	  = 'production';
 
   //idk how make it better :(
   if(userEnvRe.test(user)) {
     var res = user.match(userEnvRe);
+
     userId 	= res[1];
-    env 	= (res[2].length > 0) ? res[2] : env;
+    env 	  = (res[2].length > 0) ? res[2] : env;
   }
 
   var details = [
